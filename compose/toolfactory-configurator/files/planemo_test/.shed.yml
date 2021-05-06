@@ -1,0 +1,6 @@
+category: TF Generated Tools
+description: Lints a ToolFactory or other xml using planemo
+name: planemo_lint
+owner: planemo
+synopsis: Lints a ToolFactory or other xml using planemo
+type: unrestricted

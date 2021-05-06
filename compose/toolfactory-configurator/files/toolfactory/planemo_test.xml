@@ -1,0 +1,89 @@
+<tool name="planemo_test" id="planemo_test" version="0.01">
+  <!--Source in git at: https://github.com/fubar2/toolfactory-->
+  <!--Created by admin@galaxy.org at 04/05/2021 03:41:57 using the Galaxy Tool Factory.-->
+  <description>Planemo test/update a toolshed archive</description>
+  <requirements>
+    <requirement type="package" >planemo</requirement>
+   <requirement type="package" >git</requirement>
+  </requirements>
+  <stdio>
+    <exit_code range="1:" level="fatal"/>
+  </stdio>
+  <version_command><![CDATA[echo "0.01"]]></version_command>
+  <command><![CDATA[bash
+$runme
+$ToolFactory_toolshed_archive_from_the_history_to_test
+$new_tested_toolshed_archive]]></command>
+  <configfiles>
+    <configfile name="runme"><![CDATA[#raw
+
+### script for ToolFactory toolshed archive test tool
+mkdir testout
+tar -xvf $1
+TOOLNAME=`find . -name "*.xml"`
+FIXED=$(basename "$TOOLNAME" | cut -d. -f1)
+LOG=testout/"$FIXED"_planemo_test_log.txt
+REP=testout/"$FIXED"_planemo_test_report.html
+echo "using $LOG and $REP"
+echo "## Found toolname = $TOOLNAME" > $LOG
+planemo test --update_test_data  --test_output $REP $TOOLNAME >> $LOG
+FIXED=$(basename "$TOOLNAME" | cut -d. -f1)
+NEWF="$FIXED"_tested
+cp -r $FIXED $NEWF
+tar -cvz $NEWF > $2
+
+#end raw]]></configfile>
+  </configfiles>
+  <inputs>
+    <param name="ToolFactory_toolshed_archive_from_the_history_to_test" type="data" optional="false" label="ToolFactory toolshed archive from the history to test" help="" format="tgz,toolshed.gz" multiple="false"/>
+  </inputs>
+  <outputs>
+    <data name="new_tested_toolshed_archive" format="toolshed.gz" label="${ToolFactory_toolshed_archive_from_the_history_to_test.name}_tested" hidden="false"/>
+    <collection name="testout" type="list" label="${ToolFactory_toolshed_archive_from_the_history_to_test.name} Test Reports">
+      <discover_datasets pattern="__name_and_ext__" directory="testout" visible="false" />
+    </collection>
+  </outputs>
+  <tests>
+    <test>
+      <output name="new_tested_toolshed_archive" value="new_tested_toolshed_archive_sample" compare="sim_size" delta_frac="0.2"/>
+      <param name="ToolFactory_toolshed_archive_from_the_history_to_test" value="ToolFactory_toolshed_archive_from_the_history_to_test_sample"/>
+      <output_collection name="testout"/>
+    </test>
+  </tests>
+  <help><![CDATA[
+
+**What it Does**
+
+Runs planemo test and returns a toolshed archive updated with test outputs and a Planemo test result.
+
+Dogfood demonstration - this tool was generated with the ToolFactory and is included as a sample of what's possible
+
+
+
+
+------
+
+
+Script::
+
+    ### script for ToolFactory toolshed archive test tool
+    mkdir testout
+    tar -xvf $1
+    TOOLNAME=`find . -name "*.xml"`
+    FIXED=$(basename "$TOOLNAME" | cut -d. -f1)
+    LOG=testout/"$FIXED"_planemo_test_log.txt
+    REP=testout/"$FIXED"_planemo_test_report.html
+    echo "using $LOG and $REP"
+    echo "## Found toolname = $TOOLNAME" > $LOG
+    planemo test --update_test_data  --test_output $REP $TOOLNAME >> $LOG
+    FIXED=$(basename "$TOOLNAME" | cut -d. -f1)
+    NEWF="$FIXED"_tested
+    cp -r $FIXED $NEWF
+    tar -cvz $NEWF > $2
+
+]]></help>
+  <citations>
+    <citation type="doi">10.1093/bioinformatics/bts573</citation>
+  </citations>
+</tool>
+
