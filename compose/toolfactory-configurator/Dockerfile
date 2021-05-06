@@ -29,7 +29,8 @@ ENV EXPORT_DIR=/export \
 
 
 RUN apt update && apt install python3 git python3-pip python3-wheel python3-venv -y \
-&&  pip3 install -U pip && pip3 install planemo bioblend ephemeris parsec \
+&&  pip3 install -U pip \
+&& pip3 install planemo bioblend ephemeris parsec \
 && sh /usr/bin/common_cleanup.sh \
 && update-alternatives --install /usr/bin/python python /usr/bin/python3 9
 
@@ -40,5 +41,5 @@ COPY ./files/install-history.py /usr/local/bin/
 COPY ./files/datatypes_conf.xml /galaxy/config/
 COPY ./files/tool_conf.xml /galaxy/config/
 COPY ./files/job_conf.xml /galaxy/config/
-
+USER galaxy
 ENTRYPOINT /usr/bin/start.sh
