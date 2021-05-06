@@ -60,8 +60,7 @@ services:
       - postgres
       - galaxy-configurator
     volumes:
-      - ${EXPORT_DIR:-./export}/galaxy/config:/galaxy/config
-      - ./toolfactory-configurator/templates:/templates
+      - ${EXPORT_DIR:-./export}/:/export
   # The database for Galaxy
   postgres:
     image: postgres:12

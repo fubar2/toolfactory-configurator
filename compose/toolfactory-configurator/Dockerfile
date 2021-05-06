@@ -31,15 +31,18 @@ ENV EXPORT_DIR=/export \
 RUN apt update && apt install python3 git python3-pip python3-wheel python3-venv -y \
 &&  pip3 install -U pip \
 && pip3 install planemo bioblend ephemeris parsec \
-&& sh /usr/bin/common_cleanup.sh \
-&& update-alternatives --install /usr/bin/python python /usr/bin/python3 9
+&& mkdir -p /export/galaxy/config \
+&& touch /export/galaxy/config/reload_uwsgi.touchme \
+&& update-alternatives --install /usr/bin/python python /usr/bin/python3 9 \
+&& sh /usr/bin/common_cleanup.sh
 
-COPY ./start.sh /usr/bin/start.sh
-COPY ./files/toolfactory /galaxy/tools/
-COPY ./files/planemo_test /galaxy/tools/
-COPY ./files/install-history.py /usr/local/bin/
-COPY ./files/datatypes_conf.xml /galaxy/config/
-COPY ./files/tool_conf.xml /galaxy/config/
-COPY ./files/job_conf.xml /galaxy/config/
+COPY ./start.sh /usr/local/bin/start_tf_config.sh
+COPY ./files/toolfactory /export/galaxy/tools/
+COPY ./files/planemo_test /export/galaxy/tools/
+COPY ./files/install-history.py /export/galaxy/config/
+COPY ./files/datatypes_conf.xml /export/galaxy/config/
+COPY ./files/tool_conf.xml /export/galaxy/config/
+COPY ./files/job_conf.xml /export/galaxy/config/
+RUN chown -R galaxy:galaxy /export/galaxy/tools /export/galaxy/config
 USER galaxy
-ENTRYPOINT /usr/bin/start.sh
+ENTRYPOINT /usr/local/bin/start_tf_config.sh
