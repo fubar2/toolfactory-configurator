@@ -19,8 +19,13 @@
             <env file="/galaxy/.venv/bin/activate" />
               <env id="HOME">/home/galaxy</env>
               <param id="singularity_enabled">true</param>
-              <param id="singularity_volumes">/export/$galaxy_root:$galaxy_root:ro,/export/$tool_directory:$tool_directory:ro,/export/$job_directory:$job_directory:rw,/export/$working_directory:$working_directory:rw,/export/$default_file_path:$default_file_path:rw</param>
-              </destination>
+              <param id="singularity_volumes">/export$galaxy_root/planemo:galaxy_root/planemo:rw, /export/$galaxy_root:$galaxy_root:ro,/export/$tool_directory:$tool_directory:rw,/export/$job_directory:$job_directory:rw,/export/$working_directory:$working_directory:rw,/export/$default_file_path:$default_file_path:rw</param>
+              <env id="LC_ALL">C</env>
+              <!-- The cache directory holds the docker containers that get converted. -->
+              <env id="SINGULARITY_CACHEDIR">/tmp/singularity</env>
+              <!-- Singularity uses a temporary directory to build the squashfs filesystem. -->
+              <env id="SINGULARITY_TMPDIR">/tmp</env>
+    </destination>
     </destinations>
     <tools>
         <tool id="upload1" destination="local" />

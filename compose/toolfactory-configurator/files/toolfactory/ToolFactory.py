@@ -79,7 +79,7 @@ class Tool_Conf_Updater:
     """
 
     def __init__(
-        self, args, tool_conf_path, new_tool_archive_path, new_tool_name, local_tool_dir
+        self, args, tool_conf_path, new_tool_archive_path, new_tool_name, local_tool_dir, run_test
     ):
         self.args = args
         self.tool_conf_path = os.path.join(args.galaxy_root, tool_conf_path)
@@ -94,6 +94,13 @@ class Tool_Conf_Updater:
         tff.close()
         self.run_rsync(ourdir, self.tool_dir)
         self.update_toolconf(ourdir, ourxml)
+        if self.args.run_test:
+            watchflag = os.path.join(self.tool_dir, ourdir, ".testme")
+            wuj = ".wuj"
+            foo = open(wuj, "w")
+            foo.write("Wake up Jeff!!!")
+            foo.close()
+            self.run_rsync(wuj, watchflag)
 
     def run_rsync(self, srcf, dstf):
         src = os.path.abspath(srcf)
@@ -132,6 +139,7 @@ class Tool_Conf_Updater:
         newconf = f"{self.tool_id}_conf"
         tree.write(newconf, pretty_print=True)
         self.run_rsync(newconf, self.tool_conf_path)
+
 
 
 class Tool_Factory:
@@ -942,6 +950,7 @@ def main():
     a("--galaxy_venv", default="/galaxy_venv")
     a("--collection", action="append", default=[])
     a("--include_tests", default=False, action="store_true")
+    a("--run_test", default=False, action="store_true")
     a("--admin_only", default=False, action="store_true")
     a("--untested_tool_out", default=None)
     a("--local_tools", default="tools")  # relative to $__root_dir__
@@ -971,6 +980,7 @@ admin adds %s to "admin_users" in the galaxy.yml Galaxy configuration file'
         new_tool_archive_path=r.newtarpath,
         tool_conf_path=args.tool_conf_path,
         new_tool_name=r.tool_name,
+        run_test = args.run_test
     )
 
 if __name__ == "__main__":

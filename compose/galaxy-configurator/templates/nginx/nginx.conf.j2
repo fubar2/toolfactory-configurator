@@ -3,6 +3,9 @@ events { }
 http {
   include mime.types;
   # See https://docs.galaxyproject.org/en/latest/admin/nginx.html#serving-galaxy-at-the-web-server-root
+  fastcgi_read_timeout 1200;
+  proxy_read_timeout 1200;
+  # trying to prevent a timeout on a bioblend task during configuration
 
   # compress responses whenever possible
   gzip on;
@@ -14,7 +17,7 @@ http {
   gzip_buffers 16 8k;
 
   # allow up to 3 minutes for Galaxy to respond to slow requests before timing out
-  uwsgi_read_timeout {{ NGINX_UWSGI_READ_TIMEOUT | default(180, true) }};
+  uwsgi_read_timeout {{ NGINX_UWSGI_READ_TIMEOUT | default(1200, true) }};
 
   # maximum file upload size
   client_max_body_size 10g;

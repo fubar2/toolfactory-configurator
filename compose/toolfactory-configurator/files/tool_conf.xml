@@ -1,6 +1,7 @@
 <toolbox monitor="true">
   <section id="tf" name="ToolFactory">
     <tool file="toolfactory/ToolFactory.xml"/>
+    <tool file="planemo_test/planemo_test.xml"/>
   </section>
   <section id="getext" name="Get Data">
     <tool file="data_source/upload.xml"/>

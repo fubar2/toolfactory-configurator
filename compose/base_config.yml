@@ -6,7 +6,7 @@ galaxy_uwsgi:
   offload-threads: 2
   static-map: /static=static
   static-map: /favicon.ico=static/favicon.ico
-  master: false
+  master: true
   virtualenv: .venv
   pythonpath: lib
   thunder-lock: true
@@ -14,6 +14,7 @@ galaxy_uwsgi:
   hook-master-start: unix_signal:2 gracefully_kill_them_all
   hook-master-start: unix_signal:15 gracefully_kill_them_all
   enable-threads: true
+  touch-reload: /export/galaxy/config/reload_uwsgi.touchme
 
 
 galaxy:

@@ -1,0 +1,48 @@
+<tool name="tacrev" id="tacrev" version="0.01">
+  <!--Cite: Creating re-usable tools from scripts doi:10.1093/bioinformatics/bts573-->
+  <!--Source in git at: https://github.com/fubar2/toolfactory-->
+  <!--Created by planemo@galaxyproject.org at 12/12/2020 17:02:43 using the Galaxy Tool Factory.-->
+  <description>Reverses a text file</description>
+  <requirements/>
+  <configfiles>
+    <configfile name="runme"><![CDATA[
+tac | rev
+]]></configfile>
+  </configfiles>
+  <stdio>
+    <exit_code range="1:" level="fatal"/>
+  </stdio>
+  <version_command/>
+  <command><![CDATA[bash
+$runme
+<
+$input1
+>
+$tacrev_reversed]]></command>
+  <inputs>
+    <param optional="false" label="Input text file to be reversed" help="" format="txt" multiple="false" type="data" name="input1" argument="input1"/>
+  </inputs>
+  <outputs>
+    <data name="tacrev_reversed" format="txt" hidden="false"/>
+  </outputs>
+  <tests>
+    <test>
+      <param name="input1" value="input1_sample"/>
+      <output name="tacrev_reversed" value="tacrev_reversed_sample" format="txt"/>
+    </test>
+  </tests>
+  <help><![CDATA[
+
+**What it Does**
+
+ 
+------
+
+
+Script::
+
+    tac | rev
+
+]]></help>
+</tool>
+

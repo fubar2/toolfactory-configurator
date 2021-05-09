@@ -26,6 +26,7 @@ LOG=testout/"$FIXED"_planemo_test_log.txt
 REP=testout/"$FIXED"_planemo_test_report.html
 echo "using $LOG and $REP"
 echo "## Found toolname = $TOOLNAME" > $LOG
+export HOME="/galaxy/planemo"
 planemo test --update_test_data  --test_output $REP $TOOLNAME >> $LOG
 FIXED=$(basename "$TOOLNAME" | cut -d. -f1)
 NEWF="$FIXED"_tested
